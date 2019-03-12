@@ -40,8 +40,8 @@ import com.android.systemui.qs.tiles.RotationLockTile;
 import com.android.systemui.qs.tiles.UserTile;
 import com.android.systemui.qs.tiles.WifiTile;
 import com.android.systemui.qs.tiles.WorkModeTile;
+import com.android.systemui.qs.tiles.LoggingTile;
 import com.android.systemui.qs.QSTileHost;
-import com.android.systemui.qs.LoggingTile;
 
 public class QSFactoryImpl implements QSFactory {
 
