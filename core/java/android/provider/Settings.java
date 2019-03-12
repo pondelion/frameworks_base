@@ -3929,6 +3929,21 @@ public final class Settings {
         private static final Validator SHOW_BATTERY_PERCENT_VALIDATOR = sBooleanValidator;
 
         /**
+         * Logging mode. 0 = Off, 1 = On
+         */
+        public static final String LOGGING_MODE = "logging";
+
+        /**
+         * LOGGING_MODE value for logging off mode.
+         */
+        public static final int LOGGING_MODE_OFF = 0;
+
+        /**
+         * LOGGING_MODE value for logging on mode.
+         */
+        public static final int LOGGING_MODE_ON = 1;
+
+        /**
          * IMPORTANT: If you add a new public settings you also have to add it to
          * PUBLIC_SETTINGS below. If the new setting is hidden you have to add
          * it to PRIVATE_SETTINGS below. Also add a validator that can validate
@@ -4054,6 +4069,7 @@ public final class Settings {
             PUBLIC_SETTINGS.add(HAPTIC_FEEDBACK_ENABLED);
             PUBLIC_SETTINGS.add(SHOW_WEB_SUGGESTIONS);
             PUBLIC_SETTINGS.add(VIBRATE_WHEN_RINGING);
+            PUBLIC_SETTINGS.add(LOGGING_MODE);
         }
 
         /**
