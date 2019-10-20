@@ -44,6 +44,8 @@ LOCAL_STATIC_JAVA_LIBRARIES := \
     SystemUI-tags \
     SystemUI-proto
 
+LOCAL_STATIC_JAVA_LIBRARIES += test-lib
+
 LOCAL_JAVA_LIBRARIES := telephony-common
 LOCAL_JAVA_LIBRARIES += android.car
 
@@ -66,5 +68,11 @@ include frameworks/base/packages/SettingsLib/common.mk
 LOCAL_AAPT_FLAGS := --extra-packages com.android.keyguard
 
 include $(BUILD_PACKAGE)
+
+include $(CLEAR_VARS)
+
+LOCAL_PREBUILT_STATIC_JAVA_LIBRARIES := test-lib:../../../../prebuilts/misc/common/test-lib/test-lib.jar#libs/test_lib/test-lib.jar
+
+include $(BUILD_MULTI_PREBUILT)
 
 include $(call all-makefiles-under,$(LOCAL_PATH))

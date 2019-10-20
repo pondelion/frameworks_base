@@ -6,11 +6,14 @@ import android.provider.Settings;
 import android.provider.Settings.SettingNotFoundException;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.android.systemui.R;
 import com.android.systemui.qs.QSHost;
 import com.android.systemui.plugins.qs.QSTile.BooleanState;
 import com.android.systemui.qs.tileimpl.QSTileImpl;
+
+import com.testlib.Test;
 
 /** Quick settings tile: Logging **/
 public class LoggingTile extends QSTileImpl<BooleanState> {
@@ -29,6 +32,8 @@ public class LoggingTile extends QSTileImpl<BooleanState> {
 
     @Override
     protected void handleClick() {
+        Test test = new Test();
+        Toast.makeText(mContext , test.getTestString(), Toast.LENGTH_SHORT).show();
         try {
             boolean isEnabled = isLoggingModeEnabled();
             Settings.System.putIntForUser(mContext.getContentResolver(), LOGGING_SETTING,
