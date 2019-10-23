@@ -6,6 +6,8 @@ import android.provider.Settings;
 import android.provider.Settings.SettingNotFoundException;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
+import android.os.Handler;
+import android.os.RemoteException;
 
 import com.android.systemui.R;
 import com.android.systemui.qs.QSHost;
@@ -17,6 +19,7 @@ public class LoggingTile extends QSTileImpl<BooleanState> {
 
     public static final String TAG = "LoggingTile";
     public static final String LOGGING_SETTING = Settings.System.LOGGING_MODE;
+    private Handler mHandler = new Handler();
 
     public LoggingTile(QSHost host) {
         super(host);
@@ -29,6 +32,18 @@ public class LoggingTile extends QSTileImpl<BooleanState> {
 
     @Override
     protected void handleClick() {
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    ActivityManager.getService().requestBugReport(
+                        ActivityManager.BUGREPORT_OPTION_INTERACTIVE
+                    );
+                } catch (RemoteException e) {
+                    Log.e(TAG, "requestBugReport() failed");
+                }
+            }
+        }, 500);
         try {
             boolean isEnabled = isLoggingModeEnabled();
             Settings.System.putIntForUser(mContext.getContentResolver(), LOGGING_SETTING,

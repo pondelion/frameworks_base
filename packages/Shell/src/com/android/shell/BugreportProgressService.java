@@ -103,6 +103,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.PutObjectRequest;
+
 /**
  * Service used to keep progress of bugreport processes ({@code dumpstate}).
  * <p>
@@ -791,6 +796,24 @@ public class BugreportProgressService extends Service {
             Log.wtf(TAG, "Missing " + EXTRA_BUGREPORT + " on intent " + intent);
             return;
         }
+
+        try {
+            final String S3_ACCESS_KEY = "YOUR_ACCESS_KEY";
+            final String S3_SECRET_KEY = "YOUR_SECRET_KEY";
+            AmazonS3Client S3Client = new AmazonS3Client(
+                new BasicAWSCredentials(S3_ACCESS_KEY, S3_SECRET_KEY)
+            );
+            final String BUCKET_NAME = "aosp_test";
+            PutObjectRequest por = new PutObjectRequest(
+                BUCKET_NAME,
+                bugreportFile.getName(),
+                bugreportFile
+            );
+            S3Client.putObject(por);
+        } catch (final Exception e) {
+            Log.e(TAG, "Failed to save bugreport to S3", e);
+        }
+
         mInfoDialog.onBugreportFinished();
         BugreportInfo info = getInfo(id);
         if (info == null) {
