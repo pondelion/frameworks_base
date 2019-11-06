@@ -44,6 +44,12 @@ LOCAL_STATIC_JAVA_LIBRARIES := \
     SystemUI-tags \
     SystemUI-proto
 
+LOCAL_STATIC_JAVA_LIBRARIES += aws-android-sdk-core
+LOCAL_STATIC_JAVA_LIBRARIES += aws-android-sdk-ddb
+LOCAL_STATIC_JAVA_LIBRARIES += aws-android-sdk-ddb-mapper
+LOCAL_STATIC_JAVA_LIBRARIES += aws-android-sdk-cognito
+LOCAL_STATIC_JAVA_LIBRARIES += gson-2.7
+
 LOCAL_JAVA_LIBRARIES := telephony-common
 LOCAL_JAVA_LIBRARIES += android.car
 
@@ -66,5 +72,16 @@ include frameworks/base/packages/SettingsLib/common.mk
 LOCAL_AAPT_FLAGS := --extra-packages com.android.keyguard
 
 include $(BUILD_PACKAGE)
+
+include $(CLEAR_VARS)
+
+LOCAL_PREBUILT_STATIC_JAVA_LIBRARIES := \
+    aws-android-sdk-core:../../../../prebuilts/misc/common/aws/aws-android-sdk-core.jar \
+    aws-android-sdk-ddb:../../../../prebuilts/misc/common/aws/aws-android-sdk-ddb.jar \
+    aws-android-sdk-ddb-mapper:../../../../prebuilts/misc/common/aws/aws-android-sdk-ddb-mapper.jar \
+    aws-android-sdk-cognito:../../../../prebuilts/misc/common/aws/aws-android-sdk-cognito.jar \
+    gson-2.7:../../../../prebuilts/misc/common/gson/gson-2.7.jar \
+
+include $(BUILD_MULTI_PREBUILT)
 
 include $(call all-makefiles-under,$(LOCAL_PATH))

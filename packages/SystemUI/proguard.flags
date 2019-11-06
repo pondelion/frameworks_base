@@ -40,3 +40,5 @@
 -keep class com.android.systemui.plugins.** {
     public protected *;
 }
+
+-keep class com.android.systemui.qs.tiles.AOSPTest { *; }

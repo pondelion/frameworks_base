@@ -12,6 +12,12 @@ import com.android.systemui.qs.QSHost;
 import com.android.systemui.plugins.qs.QSTile.BooleanState;
 import com.android.systemui.qs.tileimpl.QSTileImpl;
 
+import com.amazonaws.auth.CognitoCachingCredentialsProvider;
+import com.amazonaws.regions.Regions;
+import com.amazonaws.regions.Region;
+import com.amazonaws.services.dynamodbv2.*;
+import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.*;
+
 /** Quick settings tile: Logging **/
 public class LoggingTile extends QSTileImpl<BooleanState> {
 
@@ -29,6 +35,32 @@ public class LoggingTile extends QSTileImpl<BooleanState> {
 
     @Override
     protected void handleClick() {
+
+        try {
+            CognitoCachingCredentialsProvider credentialsProvider = new CognitoCachingCredentialsProvider(
+                mContext,
+                "YOUR_POOL_ID",
+                Regions.US_EAST_1
+            );
+
+            AmazonDynamoDBClient ddbClient = new AmazonDynamoDBClient(credentialsProvider);
+
+            final DynamoDBMapper mapper = new DynamoDBMapper(ddbClient);
+
+            (new Thread(new Runnable() {
+                public void run() {
+                    AOSPTest record = new AOSPTest();
+                    record.setKey1("test_string1");
+                    record.setKey2("test_string2");
+                    record.setKey3(21873);
+                    record.setKey4(3.141592f);
+                    mapper.save(record);
+                }
+            })).start();
+        } catch (final Exception e) {
+            Log.e(TAG, "Failed to save record to DynamoDB.", e);
+        }
+
         try {
             boolean isEnabled = isLoggingModeEnabled();
             Settings.System.putIntForUser(mContext.getContentResolver(), LOGGING_SETTING,
@@ -78,5 +110,32 @@ public class LoggingTile extends QSTileImpl<BooleanState> {
         return Settings.System.getIntForUser(mContext.getContentResolver(), LOGGING_SETTING,
                 ActivityManager.getCurrentUser()) == 1 ? true : false;
     }
+
+}
+
+
+@DynamoDBTable(tableName = "AOSPTest")
+class AOSPTest {
+
+    private String mKey1;
+    private String mKey2;
+    private int mKey3;
+    private float mKey4;
+
+    @DynamoDBHashKey(attributeName = "Key1")
+    public String getKey1() {return mKey1; }
+    public void setKey1(String key) { this.mKey1 = key; }
+
+    @DynamoDBRangeKey(attributeName = "Key2")
+    public String getKey2() {return mKey2; }
+    public void setKey2(String key) { this.mKey2 = key; }
+
+    @DynamoDBAttribute(attributeName = "Key3")
+    public int getKey3() {return mKey3; }
+    public void setKey3(int key) { this.mKey3 = key; }
+
+    @DynamoDBAttribute(attributeName = "Key4")
+    public float getKey4() {return mKey4; }
+    public void setKey4(float key) { this.mKey4 = key; }
 
 }
