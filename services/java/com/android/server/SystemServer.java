@@ -114,6 +114,7 @@ import com.android.server.usage.UsageStatsService;
 import com.android.server.vr.VrManagerService;
 import com.android.server.webkit.WebViewUpdateService;
 import com.android.server.wm.WindowManagerService;
+import com.android.server.logging.GpsLoggingService;
 
 import dalvik.system.VMRuntime;
 
@@ -1563,6 +1564,11 @@ public final class SystemServer {
             mSystemServiceManager.startService(AUTO_FILL_MANAGER_SERVICE_CLASS);
             traceEnd();
         }
+
+        // GPS logging service
+        traceBeginAndSlog("StartGpsLoggingService");
+        mSystemServiceManager.startService(GpsLoggingService.class);
+        traceEnd();
 
         // It is now time to start up the app processes...
 
