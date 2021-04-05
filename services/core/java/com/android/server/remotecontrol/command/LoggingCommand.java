@@ -17,7 +17,7 @@ public enum LoggingCommand implements BaseCommand {
     @Override
     public BaseCommand str2Cmd(String cmdStr) {
         for (LoggingCommand cmd : LoggingCommand.values()) {
-            if (cmdStr == cmd.getString()) {
+            if (cmdStr.equals(cmd.getString())) {
                 return cmd;
             }
         }

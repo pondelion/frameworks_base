@@ -16,7 +16,7 @@ public enum CameraCommand implements BaseCommand {
     @Override
     public BaseCommand str2Cmd(String cmdStr) {
         for (CameraCommand cmd : CameraCommand.values()) {
-            if (cmdStr == cmd.getString()) {
+            if (cmdStr.equals(cmd.getString())) {
                 return cmd;
             }
         }

@@ -18,7 +18,7 @@ public enum CommandType {
 
     public static CommandType str2CmdType(String cmdTypeStr) {
         for (CommandType cmdType : CommandType.values()) {
-            if (cmdTypeStr == cmdType.getString()) {
+            if (cmdTypeStr.equals(cmdType.getString())) {
                 return cmdType;
             }
         }
@@ -29,28 +29,28 @@ public enum CommandType {
         switch (cmdType) {
             case ADB:
                 for (ADBCommand cmd : ADBCommand.values()) {
-                    if (cmdStr == cmd.getString()) {
+                    if (cmdStr.equals(cmd.getString())) {
                         return cmd;
                     }
                 }
                 break;
             case LOGGING:
                 for (LoggingCommand cmd : LoggingCommand.values()) {
-                    if (cmdStr == cmd.getString()) {
+                    if (cmdStr.equals(cmd.getString())) {
                         return cmd;
                     }
                 }
                 break;
             case CAMERA:
                 for (CameraCommand cmd : CameraCommand.values()) {
-                    if (cmdStr == cmd.getString()) {
+                    if (cmdStr.equals(cmd.getString())) {
                         return cmd;
                     }
                 }
                 break;
             case AUDIO:
                 for (AudioCommand cmd : AudioCommand.values()) {
-                    if (cmdStr == cmd.getString()) {
+                    if (cmdStr.equals(cmd.getString())) {
                         return cmd;
                     }
                 }

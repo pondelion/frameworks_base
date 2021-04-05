@@ -17,7 +17,7 @@ public enum AudioCommand implements BaseCommand {
     @Override
     public BaseCommand str2Cmd(String cmdStr) {
         for (AudioCommand cmd : AudioCommand.values()) {
-            if (cmdStr == cmd.getString()) {
+            if (cmdStr.equals(cmd.getString())) {
                 return cmd;
             }
         }
