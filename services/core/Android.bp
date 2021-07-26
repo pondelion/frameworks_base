@@ -1,3 +1,19 @@
+android_library_import {
+    name: "aws-android-sdk-core",
+    aars: [
+        "libs/aws-android-sdk-core-2.27.0.aar",
+    ],
+    sdk_version: "current",
+}
+
+android_library_import {
+    name: "aws-android-sdk-iot",
+    aars: [
+        "libs/aws-android-sdk-iot-2.27.0.aar",
+    ],
+    sdk_version: "current",
+}
+
 java_library_static {
     name: "services.core.unboosted",
 
@@ -54,6 +70,8 @@ java_library_static {
         "dnsresolver_aidl_interface-V2-java",
         "netd_aidl_interface-V2-java",
         "netd_event_listener_interface-java",
+        "aws-android-sdk-core",
+        "aws-android-sdk-iot",
     ],
 }
 

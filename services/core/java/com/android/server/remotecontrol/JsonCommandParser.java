@@ -4,7 +4,7 @@ import com.android.server.remotecontrol.command.BaseCommand;
 import com.android.server.remotecontrol.command.RemoteCommand;
 import com.android.server.remotecontrol.command.CommandType;
 
-import org.josn.JSONObject;
+import org.json.JSONObject;
 import org.json.JSONException;
 
 public final class JsonCommandParser implements ICommandParser {

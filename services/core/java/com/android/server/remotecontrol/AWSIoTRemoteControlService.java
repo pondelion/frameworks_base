@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.android.server.SystemService;
+// import com.android.server.remotecontrol.AWSSettings;
 import com.android.server.remotecontrol.command.RemoteCommand;
 
 import com.amazonaws.mobileconnectors.iot.AWSIotKeystoreHelper;
@@ -39,7 +40,7 @@ public final class AWSIoTRemoteControlService extends SystemService
 
     @Override
     public void startRemoteControlService() {
-        boolean isPresent = AWSIotKeystoreHelper.isKeystorePresent(KEY_STORE_PATH, AWSSettings.AWS_IOT_KEY_STORE_NAME)
+        boolean isPresent = AWSIotKeystoreHelper.isKeystorePresent(KEY_STORE_PATH, AWSSettings.KEY_STORE_NAME);
         if (!isPresent) {
             try {
                 saveCertificateAndPrivateKey(KEY_STORE_PATH);
@@ -48,10 +49,10 @@ public final class AWSIoTRemoteControlService extends SystemService
             }
         }
         KeyStore keyStore = AWSIotKeystoreHelper.getIotKeystore(
-                AWSSettings.AWS_IOT_CERT_ID,
+                AWSSettings.CERT_ID,
                 KEY_STORE_PATH,
-                AWSSettings.AWS_IOT_KEY_STORE_NAME,
-                AWSSettings.AWS_IOT_KEY_STORE_PASSWORD
+                AWSSettings.KEY_STORE_NAME,
+                AWSSettings.KEY_STORE_PASSWORD
         );
         this.mMQTTManager.connect(keyStore, new AWSIotMqttClientStatusCallback() {
             @Override
@@ -77,7 +78,7 @@ public final class AWSIoTRemoteControlService extends SystemService
         final String privKeyFile = AWSSettings.AWS_IOT_PRIV_KEY_FILEPATH;
         final String privKeyStr = readFile(privKeyFile);
         AWSIotKeystoreHelper.saveCertificateAndPrivateKey(
-            AWSSettings.AWS_IOT_CERT_ID,
+            AWSSettings.CERT_ID,
             certStr,
             privKeyStr,
             keyStorePath,
@@ -104,7 +105,7 @@ public final class AWSIoTRemoteControlService extends SystemService
         if (this.mMQTTManager == null) {
             return;
         }
-        this.mMQTTManager.publishString(msg, topic, AWSIotMqttQos.QOS0)
+        this.mMQTTManager.publishString(msg, topic, AWSIotMqttQos.QOS0);
     }
     
     private void runCommand(RemoteCommand rc) {
