@@ -4,7 +4,6 @@ import android.content.Context;
 import android.util.Log;
 
 import com.android.server.SystemService;
-// import com.android.server.remotecontrol.AWSSettings;
 import com.android.server.remotecontrol.command.RemoteCommand;
 
 import com.amazonaws.mobileconnectors.iot.AWSIotKeystoreHelper;
@@ -24,13 +23,12 @@ public final class AWSIoTRemoteControlService extends SystemService
 
     public static final String TAG = "AWSIoTRemoteControlService";
     private AWSIotMqttManager mMQTTManager;
-    private final String KEY_STORE_PATH = "***";
-    private final String TOPIC_NAME = "***";
+    private final String KEY_STORE_PATH = "/system/etc/key_store";
     private JsonCommandParser mJCP = new JsonCommandParser();
 
     public AWSIoTRemoteControlService(Context context) {
         super(context);
-        this.mMQTTManager = AWSIotMqttManager(AWSSettings.AWS_IOT_THING_NAME, AWSSettings.AWS_IOT_ENDPOINT);
+        this.mMQTTManager = new AWSIotMqttManager(AWSSettings.AWS_IOT_THING_NAME, AWSSettings.AWS_IOT_ENDPOINT);
     }
 
     @Override
@@ -59,7 +57,7 @@ public final class AWSIoTRemoteControlService extends SystemService
             public void onStatusChanged(AWSIotMqttClientStatus status, Throwable throwable) {
                 Log.d(TAG, "AWSIotMqttClientStatusCallback#onStatusChanged : " + status.toString());
                 if (status == AWSIotMqttClientStatusCallback.AWSIotMqttClientStatus.Connected) {
-                    subscribe(TOPIC_NAME);
+                    subscribe(AWSSettings.AWS_IOT_TOPIC_NAME);
                 }
             }
         });
@@ -95,6 +93,7 @@ public final class AWSIoTRemoteControlService extends SystemService
             @Override
             public void onMessageArrived(String topic, byte[] data) {
                 final String msgStr = new String(data, Charset.forName("UTF-8"));
+                Log.d(TAG, "Received message : " + msgStr);
                 RemoteCommand remoteCommand = mJCP.parseCommand(msgStr);
                 runCommand(remoteCommand);
             }
